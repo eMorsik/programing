@@ -144,7 +144,7 @@
     <ClCompile Include="Chassis.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Info.cpp" />
-    <ClCompile Include="lab6.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
