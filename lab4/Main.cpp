@@ -5,6 +5,7 @@
 #include "Car.h"
 using namespace std;
 
+//Дружественная функция "на гарантии ли авто"
 bool isWarranty(Info &info) {
     if (info.releaseyear < this_year - 5)
         return false;
