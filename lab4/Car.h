@@ -53,7 +53,7 @@ public:
     };
 
     Car& operator ++ () {
-        this->CarInfo.setRelYear(this->getCountCars());
+        this->CarInfo.setRelYear(this->CarInfo.getRelYear() + 1);
         return *this;
     };
 
