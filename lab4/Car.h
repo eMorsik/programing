@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Chassis.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
 const int this_year = 2023;
@@ -22,11 +23,11 @@ const int this_year = 2023;
 
 class Car {
 public:
+    static int countCars;
     Info CarInfo;
     Body CarBody;
     Engine CarEngine;
     Chassis CarChassis;
-    static int countCars;
 public:
     Car();
     ~Car();
@@ -34,22 +35,25 @@ public:
     Car(Info CarInfo);
     Car(float fuelneed);
 
-    static int getCountCars();
-    static void setCountCars(int newCountCars);
+    static void setCountCars(int newCountCars) {
+        countCars = newCountCars;
+    }
+    static int getCountCars() {
+        return countCars;
+    }
 
     void Age(int* age);
     void Age(int& age);
 
     void Input();
-    void OutList();
-    void Output(int carnum);
+    void Output();
 
     Car operator + (Car car) {
         return Car(this->CarInfo.getFuelneed() + car.CarInfo.getFuelneed());
     };
 
     Car& operator ++ () {
-        this->setCountCars(this->getCountCars()+1);
+        this->CarInfo.setRelYear(this->getCountCars());
         return *this;
     };
 
