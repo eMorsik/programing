@@ -12,6 +12,16 @@ bool isWarranty(Info &info) {
     return true;
 }
 
+//реализация throw
+void carInput(Car *car) {
+    if (Car::getCountCars() < 5) {
+        car->Input();
+        Car::setCountCars(Car::getCountCars() + 1);
+        return;
+    }
+    throw string{ "Недостаточно памяти для записи данных!" };
+}
+
 int main()
 {
     setlocale(LC_ALL, "russian");
@@ -19,7 +29,7 @@ int main()
     SetConsoleOutputCP(1251);
 
     //создание массива с автомобилями
-    Car car[10];
+    Car* car = new Car[5];
 
     cout << "Кол-во авто на данный момент: " << Car::getCountCars() << endl;
     cout << "любая клавиша для продолжения..." << endl;
@@ -33,8 +43,13 @@ int main()
         cin >> menu;
         if (menu == 2) {
             system("cls");
-            car[Car::getCountCars()].Input();
-            Car::setCountCars(Car::getCountCars() + 1);
+            //реализация ввода через try-catch
+            try {
+                carInput(&car[Car::getCountCars()]);
+            }
+            catch (string error_msg) {
+                cout << error_msg << endl;
+            }
             cout << "\nлюбая клавиша для продолжения..." << endl;
             _getch();
         }
