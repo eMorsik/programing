@@ -27,13 +27,15 @@ Car::Car()
 	this->CarChassis.setTypeTrans(initChassis.getTypeTrans());
 	this->CarChassis.setTypeDrive(initChassis.getTypeDrive());
 
+	this->CarCost = 0;
+
 }
 
 Car::~Car()
 {
 }
 
-Car::Car(Info CarInfo, Body CarBody, Engine CarEngine, Chassis CarChassis)
+Car::Car(Info CarInfo, Body CarBody, Engine CarEngine, Chassis CarChassis, int CarCost)
 {
 	this->CarInfo.setModel(CarInfo.getModel());
 	this->CarInfo.setRelYear(CarInfo.getRelYear());
@@ -51,6 +53,8 @@ Car::Car(Info CarInfo, Body CarBody, Engine CarEngine, Chassis CarChassis)
 
 	this->CarChassis.setTypeTrans(CarChassis.getTypeTrans());
 	this->CarChassis.setTypeDrive(CarChassis.getTypeDrive());
+
+	this->CarCost = CarCost;
 }
 
 Car::Car(Info CarInfo)
@@ -75,6 +79,8 @@ Car::Car(Info CarInfo)
 
 	this->CarChassis.setTypeTrans(initChassis.getTypeTrans());
 	this->CarChassis.setTypeDrive(initChassis.getTypeDrive());
+
+	this->CarCost = 0;
 }
 
 Car::Car(float fuelneed)
@@ -100,6 +106,18 @@ Car::Car(float fuelneed)
 
 	this->CarChassis.setTypeTrans(initChassis.getTypeTrans());
 	this->CarChassis.setTypeDrive(initChassis.getTypeDrive());
+
+	this->CarCost = 0;
+}
+
+void Car::setCarCost(int CarCost)
+{
+	this->CarCost = CarCost;
+}
+
+int Car::getCarCost()
+{
+	return this->CarCost;
 }
 
 void Car::Age(int* age) {
@@ -161,6 +179,10 @@ void Car::Input()
 	cout << "Тип привода авто: ";
 	getline(cin, buffs);
 	this->CarChassis.setTypeDrive(buffs);
+
+	cout << "\nСтоимость авто с завода: ";
+	cin >> buff;
+	this->setCarCost(buff);
 }
 
 void Car::Output()
@@ -182,6 +204,7 @@ void Car::Output()
 	//шасси авто
 	cout << "\nТип КПП: " << this->CarChassis.getTypeTrans() << endl;
 	cout << "Тип привода авто: " << this->CarChassis.getTypeDrive() << endl;
+	cout << "\nСтоимость авто с завода: " << this->getCarCost() << endl;
 }
 
 

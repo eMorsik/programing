@@ -5,6 +5,7 @@ using namespace std;
 
 class Info
 {
+	//дружественная функция "на гарнтии ли авто"
 	friend bool isWarranty(Info &info);
 private:
 	string model;

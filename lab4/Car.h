@@ -19,6 +19,8 @@ const int this_year = 2023;
     *Класс Двигатель: объем, мощность, турбированность
     
     *Класс Шасси: тип КПП, тип привода
+    
+    *Поле стоимость авто
 */
 
 class Car {
@@ -28,10 +30,12 @@ public:
     Body CarBody;
     Engine CarEngine;
     Chassis CarChassis;
+protected: int CarCost;
+
 public:
     Car();
     ~Car();
-    Car(Info CarInfo, Body CarBody, Engine CarEngine, Chassis CarChassis);
+    Car(Info CarInfo, Body CarBody, Engine CarEngine, Chassis CarChassis, int CarCost);
     Car(Info CarInfo);
     Car(float fuelneed);
 
@@ -41,6 +45,10 @@ public:
     static int getCountCars() {
         return countCars;
     }
+
+    //виртуальный метод
+    virtual int getCarCost();
+    void setCarCost(int CarCost);
 
     void Age(int* age);
     void Age(int& age);

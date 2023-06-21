@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Body.cpp" />
+    <ClCompile Include="BrokenCar.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Chassis.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -149,10 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
+    <ClInclude Include="BrokenCar.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="Chassis.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Info.h" />
+    <ClInclude Include="Template.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
