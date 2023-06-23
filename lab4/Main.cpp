@@ -2,6 +2,9 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>
+#include <vector>
+#include <algorithm>
+
 #include "Car.h"
 #include "BrokenCar.h"
 #include "Template.h"
@@ -14,14 +17,14 @@ bool isWarranty(Info &info) {
     return true;
 }
 
-//реализация throw
-void carInput(Car *car) {
-    if (Car::getCountCars() < 5) {
-        car->Input();
-        Car::setCountCars(Car::getCountCars() + 1);
-        return;
-    }
-    throw string{ "Недостаточно памяти для записи данных!" };
+//сравнение годов выпуска
+bool lessByYear(Car& a, Car& b) {
+    return a.CarInfo.getRelYear() < b.CarInfo.getRelYear();
+}
+string target;
+//сравнение моделей авто
+bool equalByModel(Car &a) {
+    return a.CarInfo.getModel() == target;
 }
 
 int main()
@@ -31,60 +34,29 @@ int main()
     SetConsoleOutputCP(1251);
 
     //создание массива с автомобилями
-    Car* car = new Car[5];
+    //Car* car = new Car[5];
+    //BrokenCar* brokencar = new BrokenCar[5];
+
+    Car car;
     BrokenCar brokencar;
 
-    cout << "Кол-во авто на данный момент: " << Car::getCountCars() << endl;
-    cout << "любая клавиша для продолжения..." << endl;
-    _getch();
+    vector<Car> Cars;
 
     int menu, n = 0, buff = 0;
     do {
         system("cls");
-        cout << "(1)Выход\n(2)Ввод данных об авто\n(3)Вывод данных об авто\n"
-            "(4)Кол-во авто\n(5)Проверить состояние гарантии авто\n(6)Добавление битого авто" << endl;
+        cout << "(1)Выход\n(2)Добавление авто\n(3)Добавление битого авто\n(4)Список моделей и года выпуска авто\n"
+            "(5)Кол-во авто\n(6)Сортировка авто по году выпуска\n(7)Поиск авто по модели" << endl;
         cin >> menu;
         if (menu == 2) {
             system("cls");
-            //реализация ввода через try-catch
-            try {
-                carInput(&car[Car::getCountCars()]);
-            }
-            catch (string error_msg) {
-                cout << error_msg << endl;
-            }
+            car.Input();
+            Cars.push_back(car);
             cout << "\nлюбая клавиша для продолжения..." << endl;
             _getch();
         }
         else if (menu == 3) {
             system("cls");
-            do {
-                cout << "Введите номер авто, данные которого хотите вывести: ";
-                cin >> n;
-            } while (n > Car::getCountCars() || n < 1);
-            car[n-1].Output();
-            cout << "\nлюбая клавиша для продолжения..." << endl;
-            _getch();
-        }
-        else if (menu == 4) {
-            system("cls");
-            cout << "Кол-во авто на данный момент: " << Car::getCountCars() << endl;
-            cout << "\nлюбая клавиша для продолжения..." << endl;
-            _getch();
-        }
-        else if (menu == 5) {
-            system("cls");
-            do {
-                cout << "Введите номер авто, которое хотите проверить: ";
-                cin >> n;
-            } while (n > Car::getCountCars() || n < 1);
-            cout << "Состояние гарантии: " << isWarranty(car[n - 1].CarInfo) << endl;
-            cout << "\nлюбая клавиша для продолжения..." << endl;
-            _getch();
-        }
-        else if (menu == 6) {
-            system("cls");
-            //реализация виртуального метода и производного класса
             brokencar.Input();
             do {
                 cout << "\nСостояние битого авто(от 0 до 100%): ";
@@ -92,22 +64,47 @@ int main()
             } while (buff > 100 || buff < 0);
             brokencar.setCarCondition(buff);
             cout << "\nСтоимость авто с учётом состояния: " << brokencar.getCarCost();
+            Cars.push_back(brokencar);
+            cout << "\nлюбая клавиша для продолжения..." << endl;
+            _getch();
+        }
+        else if (menu == 4) {
+            system("cls");
+            for (int i = 0; i < Cars.size(); i++) {
+                cout << "(" << i + 1 << ") " << Cars[i].CarInfo.getModel() <<" " << Cars[i].CarInfo.getRelYear()<< "г.в." << endl;
+            }
+            cout << "\nлюбая клавиша для продолжения..." << endl;
+            _getch();
+        }
+        else if (menu == 5) {
+            system("cls");
+            cout << "Кол-во авто на данный момент: " << Cars.size() << endl;
+            cout << "\nлюбая клавиша для продолжения..." << endl;
+            _getch();
+        }
+        else if (menu == 6) {
+            system("cls");
+            //сортировка по году выпуска
+            sort(Cars.begin(), Cars.end(), lessByYear);
+            cout << "Список авто отсортирован по году выпуска!" << endl;
+            cout << "\nлюбая клавиша для продолжения..." << endl;
+            _getch();
+        }
+        else if (menu == 7) {
+            system("cls");
+            getline(cin, target);
+            cout << "Модель авто: ";
+            getline(cin, target);
+            //поиск по модели
+            auto it = find_if(Cars.begin(), Cars.end(), equalByModel);
+            if (it == Cars.end())
+                cout << "\nАвто такой модели не найдено...";
+            else
+                cout << "\nАвто такой модели найдено по номеру: " << (it - Cars.begin() + 1) << endl;
             cout << "\nлюбая клавиша для продолжения..." << endl;
             _getch();
         }
     } while (menu != 1);
-
-    //Реализация шаблона класса(лучше не придумал)
-    Parts<Engine, 10> engine;
-    for (int i = 0; i < Car::getCountCars(); i++) {
-        engine.setArrItem(car[i].CarEngine, i);
-    }
-    float MPower = 0;
-    for (int i = 0; i < Car::getCountCars(); i++) {
-        MPower += engine.getArrItem(i).getPower();
-    }
-    MPower = MPower / Car::getCountCars();
-    cout << "\nСредняя мощность двигателей: " << MPower << endl;
 
     return 0;
 }
